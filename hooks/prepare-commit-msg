@@ -1,0 +1,43 @@
+#!/bin/bash
+echo "🔍 Start commit message preparing"
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# 1. 커밋 메시지 형식 검증 (Regex)
+# 형식: <type>: <subject> (타입 뒤 콜론, 그리고 반드시 공백 1칸 포함)
+REGEXP="^(feat|fix|docs|style|refactor|test|chore|ci): .+"
+
+if ! [[ "$COMMIT_MSG" =~ $REGEXP ]]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "⚠️ Commit Message Error"
+    echo "  입력된 메시지: $COMMIT_MSG"
+    echo ""
+    echo "  형식이 올바르지 않습니다! 아래 규격을 지켜주세요."
+    echo "  👉 <type>: <subject> (콜론 뒤 공백 1칸 필수)"
+    echo "  예시) feat: 로그인 기능 구현"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+fi
+
+# 2. 타입 추출 및 이모지 매핑
+TYPE=$(echo "$COMMIT_MSG" | cut -d':' -f1)
+
+case "$TYPE" in
+  feat)     EMOJI="✨" ;;
+  fix)      EMOJI="🐛" ;;
+  docs)     EMOJI="📝" ;;
+  style)    EMOJI="🎨" ;;
+  refactor) EMOJI="♻️" ;;
+  test)     EMOJI="✅" ;;
+  chore)    EMOJI="⚙️" ;;
+  ci)       EMOJI="👷" ;;
+  *)        echo "❌ 뭔가 잘못됐습니다."
+            exit 1 ;;
+esac
+
+# 3. 이모지 부착 및 파일 갱신
+echo "$EMOJI $COMMIT_MSG" > "$COMMIT_MSG_FILE"
+
+echo "✅ Complete Emoji mapping: $EMOJI $TYPE"
+exit 0

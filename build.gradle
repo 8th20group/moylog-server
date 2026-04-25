@@ -31,3 +31,26 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.register('configureGitHooksPath', Exec) {
+    group = 'verification'
+    commandLine 'git', 'config', 'core.hooksPath', 'hooks'
+}
+
+tasks.register('makeHooksExecutable', Exec) {
+    group = 'verification'
+    onlyIf { !System.getProperty('os.name').toLowerCase().contains('windows') }
+    commandLine 'chmod', '-R', '+x', 'hooks'
+}
+
+tasks.register('updateGitHooks') {
+    group = 'verification'
+    dependsOn 'configureGitHooksPath', 'makeHooksExecutable'
+    doLast {
+        println "✅ Git hooks setup completed!"
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn 'updateGitHooks'
+}

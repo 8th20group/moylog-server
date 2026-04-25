@@ -1,0 +1,8 @@
+#!/bin/bash
+if grep -r "System.out.println" ./src; then
+    echo "⚠️ System.out.println이 발견되었습니다. 로깅 라이브러리를 사용하거나 제거해주세요."
+    exit 1
+fi
+
+echo "✅ Complete pre-commit verification"
+exit 0
