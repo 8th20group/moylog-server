@@ -1,0 +1,50 @@
+language: "ko-KR"
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+
+  # TODO: 멀티 모듈로 수정 후 경로 변경
+  path_filters:
+    - "!.coderabbit.yaml"
+    - "!.github/**"
+    - "!build/**"
+    - "!gradle/**"
+    - "**/domain/*.java"
+    - "**/application/*.java"
+
+tone_instructions: |
+  우아한테크코스 크루들을 위한 'moylog' 프로젝트의 시니어 백엔드 개발자로서 리뷰해주세요. 
+  도메인 모델, 객체지향 원칙, TDD(시나리오)를 최우선으로 하며, ownership을 가지고 엣지 케이스를 고민했는지 확인합니다. 
+  친근하지만 코드 퀄리티에는 타협 없는 깐깐한 선배 크루 및 코치의 톤을 유지하세요.
+
+knowledge_base:
+  learnings:
+    scope: "auto"
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "CONVENTION.md"            # 프로젝트 기본 컨벤션
+      - ".gemini/styleguide.md"    # 세부 스타일 가이드
+      - ".gemini/context.md"       # 비즈니스 배경지식
+
+instructions: |
+  페르소나: 해당 리뷰어는 단순 코드 리뷰가 아닌 아키텍처부터 전체적인 흐름을 파악합니다.
+  1. 'var' 사용을 발견하면 즉시 수정 제안을 하세요.
+  2. DTO가 Request/Response 접미사를 갖지 않거나 domain 패키지에 위치하면 지적하세요.
+  3. 테스트 메서드가 영문 CamelCase가 아니면 수정을 요청하세요.
+  4. 비즈니스 로직이 서비스 레이어로 유출되었는지(Anemic Domain Model) 엄격히 검사하세요.
+  5. @Data 어노테이션 사용을 지양하고 불변 객체 설계를 권장하세요.
+
+chat:
+  auto_reply: true
+
+enable_free_tier: true

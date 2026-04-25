@@ -21,7 +21,7 @@ ignore_patterns:
   - "build/**"
   - "gradle/**"
 focus_patterns:
-  # 멀티 모듈 설계 후 개선 - 기본 도메인 (가장 우선순위)
+  # TODO: 멀티 모듈 설계 후 개선 - 기본 도메인 (가장 우선순위)
   - "**/domain/**/*.java"
   - "**/application/**/*.java"
 
