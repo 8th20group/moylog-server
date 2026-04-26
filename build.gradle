@@ -50,7 +50,3 @@ tasks.register('updateGitHooks') {
         println "✅ Git hooks setup completed!"
     }
 }
-
-tasks.named('compileJava') {
-    dependsOn 'updateGitHooks'
-}
