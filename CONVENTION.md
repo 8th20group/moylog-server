@@ -65,7 +65,7 @@ Github-Repository/
 * 주요 패키지
   * `com.moylog.external.redis`: 캐싱 및 분산 락 구현
   * `com.moylog.external.clients`: 외부 Open API 연동 (Feign, WebClient)
-  * `com.moylog.external.persistence.<featrue>`: JPA/QueryDSL 등 레포지토리 구현체
+  * `com.moylog.external.persistence.<feature>`: JPA/QueryDSL 등 레포지토리 구현체
 
 **⚠️중요**: persistence의 경우 쿼리 튜닝으로 인해 빈번한 수정이 발생한다. app 모듈의 독립성을 위해 external에 위치한다.
 
@@ -151,12 +151,12 @@ public class BaseException extends RuntimeException {
   private final ErrorCode errorCode;
 
   public BaseException(ErrorCode errorCode) {
-    super(errorCode.mesage());
+    super(errorCode.message());
     this.errorCode = errorCode;
   }
 
   public BaseException(ErrorCode errorCode, Object... args) {
-    super(errorCode.mesage(args));
+    super(errorCode.message(args));
   }
 
   public ErrorCode getErrorCode() {
@@ -209,7 +209,7 @@ public interface ErrorCode {
 }
 ```
 
---
+---
 
 ## 클래스 네이밍 규칙
 
