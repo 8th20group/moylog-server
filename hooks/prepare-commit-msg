@@ -31,5 +31,5 @@ SELECTED_EMOJI=$(get_emoji "$PURE_TYPE")
 
 # 매핑되는 이모지가 있을 때만 부착 (검증은 commit-msg에서 함)
 if [ -n "$SELECTED_EMOJI" ]; then
-    echo "$SELECTED_EMOJI $COMMIT_MSG" > "$COMMIT_MSG_FILE"
+    printf "%s %s\n" "$SELECTED_EMOJI" "$COMMIT_MSG" > "$COMMIT_MSG_FILE"
 fi

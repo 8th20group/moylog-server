@@ -376,7 +376,7 @@ public class PostFixture {
 
 ### PR 컨벤션
 
-> **PR 제목 형식 - \<type>: \<subject> (scope)**  
+> **PR 제목 형식 - \<type>: \<subject>**  
 * 스코프는 이슈 번호로 표현한다.
   * 예시) feat: 기능추가 (#1)
 - **최소 1명의 Approve** 필수
