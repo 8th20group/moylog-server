@@ -134,7 +134,7 @@ class DependencyVersions {
   * EntityNotFoundException: 리소스를 찾을 수 없을 때 (HTTP STATUS: 404)
   * DuplicateApplicationException: 중복된 데이터가 존재할 때 (HTTP STATUS: 409)
 * External
-  * BadGateWayException: 외부 시스템(타 서버)에서 잘못된 응답을 받았을 때 (HTTP STATUS: 502)
+  * BadGatewayException: 외부 시스템(타 서버)에서 잘못된 응답을 받았을 때 (HTTP STATUS: 502)
   * ServiceUnavailableException: 외부 서비스 과부하 (HTTP STATUS: 503)
 * 그 외 추가적인 예외는 이후 필요에 따라 추가한다.
 
@@ -381,7 +381,7 @@ public class PostFixture {
   * 예시) feat: 기능추가 (#1)
 - **최소 1명의 Approve** 필수
   - 팀원의 여유가 되지 않는다면 `@gemini review`로 리뷰 받는다.
-- CI(빌드 & 테스트 & 커버리지 50%) 통과 필수
+- CI(빌드 & 테스트 & 커버리지 기준) 통과 필수
 - **머지 방식: Squash and merge**
 
 ### 코드 리뷰 프로세스
