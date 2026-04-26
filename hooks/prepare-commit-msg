@@ -1,44 +1,35 @@
 #!/bin/bash
-echo "🔍 Start commit message preparing"
 
+# 타입별 이모지 정의 (매핑용)
+get_emoji() {
+    case "$1" in
+        feat)     echo "✨" ;;
+        fix)      echo "🐛" ;;
+        docs)     echo "📝" ;;
+        style)    echo "🎨" ;;
+        refactor) echo "♻️" ;;
+        test)     echo "✅" ;;
+        chore)    echo "⚙️" ;;
+        ci)       echo "👷" ;;
+        *)        echo "" ;;
+    esac
+}
+
+EMOJIS="✨|🐛|📝|🎨|♻️|✅|⚙️|👷"
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
 FIRST_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
 
-# 1. 커밋 메시지 형식 검증 (Regex)
-# 형식: <type>: <subject> (타입 뒤 콜론, 그리고 반드시 공백 1칸 포함)
-REGEXP="^(feat|fix|docs|style|refactor|test|chore|ci): .+"
-
-if ! [[ "$FIRST_LINE" =~ $REGEXP ]]; then
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "⚠️ Commit Message Error"
-    echo "  입력된 메시지: $FIRST_LINE"
-    echo ""
-    echo "  형식이 올바르지 않습니다! 아래 규격을 지켜주세요."
-    echo "  👉 <type>: <subject> (콜론 뒤 공백 1칸 필수)"
-    echo "  예시) feat: 로그인 기능 구현"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    exit 1
+# 이미 허용된 이모지 중 하나로 시작한다면 아무것도 안 함
+if [[ "$FIRST_LINE" =~ ^($EMOJIS) ]]; then
+    exit 0
 fi
 
-# 2. 타입 추출 및 이모지 매핑
-TYPE=$(echo "$FIRST_LINE" | cut -d':' -f1)
+# 타입(콜론 앞부분) 추출 후 이모지 가져오기
+PURE_TYPE=$(echo "$FIRST_LINE" | cut -d':' -f1)
+SELECTED_EMOJI=$(get_emoji "$PURE_TYPE")
 
-case "$TYPE" in
-  feat)     EMOJI="✨" ;;
-  fix)      EMOJI="🐛" ;;
-  docs)     EMOJI="📝" ;;
-  style)    EMOJI="🎨" ;;
-  refactor) EMOJI="♻️" ;;
-  test)     EMOJI="✅" ;;
-  chore)    EMOJI="⚙️" ;;
-  ci)       EMOJI="👷" ;;
-  *)        echo "❌ 뭔가 잘못됐습니다."
-            exit 1 ;;
-esac
-
-# 3. 이모지 부착 및 파일 갱신
-echo "$EMOJI $COMMIT_MSG" > "$COMMIT_MSG_FILE"
-
-echo "✅ Complete Emoji mapping: $EMOJI $TYPE"
-exit 0
+# 매핑되는 이모지가 있을 때만 부착 (검증은 commit-msg에서 함)
+if [ -n "$SELECTED_EMOJI" ]; then
+    echo "$SELECTED_EMOJI $COMMIT_MSG" > "$COMMIT_MSG_FILE"
+fi

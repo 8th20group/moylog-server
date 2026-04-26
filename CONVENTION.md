@@ -411,6 +411,7 @@ public class PostFixture {
 
 * Gradle Git Hook: 별도의 외부 의존성(Node.js) 없이 Gradle Task를 활용하여 Git Hook 관리
   * 메시지 작성 (prepare-commit-msg): 커밋 타입에 맞는 이모지를 자동으로 접두어에 추가.
+  * 메시지 검증 (commit-msg): 최종적으로 생성된 커밋 메시지 검증
   * 푸시 전 (pre-push): 전체 Test 수행 및 Jacoco 커버리지(Domain 80%, App 50%) 등 충족 여부 확인.
 * CodeRabbit AI: PR 생성 시 아키텍처 관점의 전체적인 흐름 및 로직 설계 리뷰
   * 프로젝트의 컨텍스트를 이해하고, 모듈 간의 의존성이나 아키텍처 설계가 컨벤션에 부합하는지 '숲'을 보는 관점에서 리뷰 수행

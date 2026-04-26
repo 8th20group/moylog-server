@@ -1,1 +1,52 @@
-# 필요에 따라 추가
+#!/bin/bash
+
+# 타입별 이모지 정의 (검증용)
+get_emoji() {
+    case "$1" in
+        feat)     echo "✨" ;;
+        fix)      echo "🐛" ;;
+        docs)     echo "📝" ;;
+        style)    echo "🎨" ;;
+        refactor) echo "♻️" ;;
+        test)     echo "✅" ;;
+        chore)    echo "⚙️" ;;
+        ci)       echo "👷" ;;
+        *)        echo "" ;;
+    esac
+}
+
+EMOJIS="✨|🐛|📝|🎨|♻️|✅|⚙️|👷"
+TYPES="feat|fix|docs|style|refactor|test|chore|ci"
+
+COMMIT_MSG_FILE=$1
+FIRST_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
+
+# 예외 케이스 통과
+if [[ $FIRST_LINE =~ ^(Merge|Revert|Amend|Rebase) ]]; then
+    exit 0
+fi
+
+# 2. 형식 검증 (Regex: <이모지> <타입>: <제목>)
+REGEXP="^($EMOJIS) ($TYPES): .+"
+if ! [[ "$FIRST_LINE" =~ $REGEXP ]]; then
+    echo "❌ 형식 오류! <이모지> <타입>: <제목> 규격을 맞춰주세요."
+    exit 1
+fi
+
+# 2-1. 타입에 맞는 이모지인지 체크 (Cross-Check)
+EXTRACTED_EMOJI=$(echo "$FIRST_LINE" | cut -d' ' -f1)
+EXTRACTED_TYPE=$(echo "$FIRST_LINE" | cut -d' ' -f2 | cut -d':' -f1)
+EXPECTED_EMOJI=$(get_emoji "$EXTRACTED_TYPE")
+
+if [ "$EXTRACTED_EMOJI" != "$EXPECTED_EMOJI" ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "❌ 이모지 매칭 오류!"
+    echo "   입력된 타입: $EXTRACTED_TYPE"
+    echo "   기대된 이모지: $EXPECTED_EMOJI"
+    echo "   실제 입력된 이모지: $EXTRACTED_EMOJI"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+fi
+
+echo "✅ Complete commit verification"
+exit 0
