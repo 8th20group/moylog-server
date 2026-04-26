@@ -3,15 +3,16 @@ echo "🔍 Start commit message preparing"
 
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+FIRST_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
 
 # 1. 커밋 메시지 형식 검증 (Regex)
 # 형식: <type>: <subject> (타입 뒤 콜론, 그리고 반드시 공백 1칸 포함)
 REGEXP="^(feat|fix|docs|style|refactor|test|chore|ci): .+"
 
-if ! [[ "$COMMIT_MSG" =~ $REGEXP ]]; then
+if ! [[ "$FIRST_LINE" =~ $REGEXP ]]; then
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "⚠️ Commit Message Error"
-    echo "  입력된 메시지: $COMMIT_MSG"
+    echo "  입력된 메시지: $FIRST_LINE"
     echo ""
     echo "  형식이 올바르지 않습니다! 아래 규격을 지켜주세요."
     echo "  👉 <type>: <subject> (콜론 뒤 공백 1칸 필수)"
@@ -21,7 +22,7 @@ if ! [[ "$COMMIT_MSG" =~ $REGEXP ]]; then
 fi
 
 # 2. 타입 추출 및 이모지 매핑
-TYPE=$(echo "$COMMIT_MSG" | cut -d':' -f1)
+TYPE=$(echo "$FIRST_LINE" | cut -d':' -f1)
 
 case "$TYPE" in
   feat)     EMOJI="✨" ;;
