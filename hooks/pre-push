@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "🔍 Start commit verification before push"
+
+# 커밋 후 Push 과정에서 추가할 검증 생기면 작성 (JACOCO, ...)
+
+echo "✅ Complete commit verification before push"
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# TODO: spotless 도입 후 자동 정렬 추가
+
+echo "✅ Complete pre-commit verification"
+exit 0

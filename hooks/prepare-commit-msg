@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# 타입별 이모지 정의 (매핑용)
+get_emoji() {
+    case "$1" in
+        feat)     echo "✨" ;;
+        fix)      echo "🐛" ;;
+        docs)     echo "📝" ;;
+        style)    echo "🎨" ;;
+        refactor) echo "♻️" ;;
+        test)     echo "✅" ;;
+        chore)    echo "⚙️" ;;
+        ci)       echo "👷" ;;
+        *)        echo "" ;;
+    esac
+}
+
+EMOJIS="✨|🐛|📝|🎨|♻️|✅|⚙️|👷"
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+FIRST_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
+
+# 이미 허용된 이모지 중 하나로 시작한다면 아무것도 안 함
+if [[ "$FIRST_LINE" =~ ^($EMOJIS) ]]; then
+    exit 0
+fi
+
+# 타입(콜론 앞부분) 추출 후 이모지 가져오기
+PURE_TYPE=$(echo "$FIRST_LINE" | cut -d':' -f1)
+SELECTED_EMOJI=$(get_emoji "$PURE_TYPE")
+
+# 매핑되는 이모지가 있을 때만 부착 (검증은 commit-msg에서 함)
+if [ -n "$SELECTED_EMOJI" ]; then
+    printf "%s %s\n" "$SELECTED_EMOJI" "$COMMIT_MSG" > "$COMMIT_MSG_FILE"
+fi
